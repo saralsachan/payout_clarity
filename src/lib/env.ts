@@ -3,9 +3,7 @@ export function getPublicEnv() {
     supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ?? "",
     supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "",
     appUrl: process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
-    paddleClientToken: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN ?? "",
-    paddlePriceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID ?? "",
-    paddleEnv: process.env.NEXT_PUBLIC_PADDLE_ENV ?? "sandbox",
+    dodoProductId: process.env.NEXT_PUBLIC_DODO_PRODUCT_ID ?? "",
   };
 }
 
@@ -18,9 +16,9 @@ export function getServerEnv() {
     shopifyScopes: process.env.SHOPIFY_SCOPES ?? "read_shopify_payments_payouts",
     shopifyAppUrl: process.env.SHOPIFY_APP_URL ?? process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
     shopifyApiVersion: process.env.SHOPIFY_API_VERSION ?? "2025-10",
-    paddleApiKey: process.env.PADDLE_API_KEY ?? "",
-    paddleWebhookSecret: process.env.PADDLE_WEBHOOK_SECRET ?? "",
-    paddleEnv: process.env.PADDLE_ENV ?? "sandbox",
+    dodoApiKey: process.env.DODO_PAYMENTS_API_KEY ?? "",
+    dodoWebhookKey: process.env.DODO_PAYMENTS_WEBHOOK_KEY ?? "",
+    dodoEnvironment: getDodoEnvironment(),
     mockShopifyPayouts: process.env.MOCK_SHOPIFY_PAYOUTS === "true",
   };
 }
@@ -28,6 +26,11 @@ export function getServerEnv() {
 export function getAppUrl() {
   const env = getServerEnv();
   return env.shopifyAppUrl || env.appUrl;
+}
+
+export function getDodoEnvironment(): "test_mode" | "live_mode" {
+  const env = process.env.DODO_PAYMENTS_ENVIRONMENT ?? "test_mode";
+  return env === "live_mode" ? "live_mode" : "test_mode";
 }
 
 export function isMockModeEnabled() {

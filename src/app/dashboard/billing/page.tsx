@@ -2,8 +2,7 @@ import { redirect } from "next/navigation";
 import { format } from "date-fns";
 import { getUser } from "@/lib/supabase/server";
 import { createClient } from "@/lib/supabase/server";
-import { hasProAccess } from "@/lib/paddle/entitlements";
-import { getCustomerPortalUrl } from "@/lib/paddle/client";
+import { hasProAccess } from "@/lib/dodo/entitlements";
 import { UpgradeButton } from "@/components/billing/upgrade-button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +10,11 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-export default async function BillingPage() {
+export default async function BillingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ success?: string }>;
+}) {
   const user = await getUser();
   if (!user) redirect("/login");
 
@@ -23,15 +26,10 @@ export default async function BillingPage() {
     .maybeSingle();
 
   const isPro = await hasProAccess(user.id);
-  let portalUrl: string | null = null;
-
-  if (isPro && subscription?.paddle_customer_id) {
-    try {
-      portalUrl = await getCustomerPortalUrl(subscription.paddle_customer_id);
-    } catch {
-      portalUrl = null;
-    }
-  }
+  const params = await searchParams;
+  const portalUrl = subscription?.dodo_customer_id
+    ? `/api/customer-portal/dodo?customer_id=${encodeURIComponent(subscription.dodo_customer_id)}`
+    : null;
 
   return (
     <div className="space-y-8">
@@ -39,6 +37,14 @@ export default async function BillingPage() {
         <h1 className="text-2xl font-semibold tracking-tight">Billing</h1>
         <p className="mt-1 text-sm text-muted-foreground">Manage your subscription</p>
       </div>
+
+      {params.success === "true" && (
+        <Card className="border-primary/30 bg-accent/30">
+          <CardContent className="py-4 text-sm">
+            Payment received. Your Pro access will activate once Dodo confirms the subscription.
+          </CardContent>
+        </Card>
+      )}
 
       <Card className="border-border shadow-sm">
         <CardHeader>
@@ -61,12 +67,7 @@ export default async function BillingPage() {
             </p>
           )}
           {isPro && portalUrl ? (
-            <a
-              href={portalUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(buttonVariants())}
-            >
+            <a href={portalUrl} className={cn(buttonVariants())}>
               Manage billing
             </a>
           ) : !isPro ? (
@@ -78,11 +79,12 @@ export default async function BillingPage() {
                 <li>CSV exports</li>
                 <li>Monthly / YTD summary</li>
               </ul>
-              <UpgradeButton userId={user.id} userEmail={user.email} className="mt-4" />
+              <UpgradeButton className="mt-4" />
             </div>
           ) : (
             <p className="text-sm text-muted-foreground">
-              Configure Paddle customer portal in your Paddle dashboard.
+              Manage your subscription in the Dodo Payments customer portal once your customer ID
+              is synced.
             </p>
           )}
         </CardContent>

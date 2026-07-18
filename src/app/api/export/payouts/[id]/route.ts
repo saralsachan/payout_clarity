@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getUser } from "@/lib/supabase/server";
 import { getPayoutById, getPayoutsForUser } from "@/lib/data/payouts";
-import { hasProAccess, canAccessPayout } from "@/lib/paddle/entitlements";
+import { hasProAccess, canAccessPayout } from "@/lib/dodo/entitlements";
 import { buildPayoutCsvRows, rowsToCsv } from "@/lib/csv/export";
 
 export async function GET(

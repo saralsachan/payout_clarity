@@ -152,8 +152,8 @@ export type Database = {
         {
           id: string;
           user_id: string;
-          paddle_customer_id: string | null;
-          paddle_subscription_id: string | null;
+          dodo_customer_id: string | null;
+          dodo_subscription_id: string | null;
           status: string;
           plan: string;
           current_period_end: string | null;
@@ -163,8 +163,8 @@ export type Database = {
         {
           id?: string;
           user_id: string;
-          paddle_customer_id?: string | null;
-          paddle_subscription_id?: string | null;
+          dodo_customer_id?: string | null;
+          dodo_subscription_id?: string | null;
           status?: string;
           plan?: string;
           current_period_end?: string | null;
@@ -174,8 +174,8 @@ export type Database = {
         {
           id?: string;
           user_id?: string;
-          paddle_customer_id?: string | null;
-          paddle_subscription_id?: string | null;
+          dodo_customer_id?: string | null;
+          dodo_subscription_id?: string | null;
           status?: string;
           plan?: string;
           current_period_end?: string | null;

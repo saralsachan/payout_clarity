@@ -1,81 +1,46 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-declare global {
-  interface Window {
-    Paddle?: {
-      Environment: { set: (env: string) => void };
-      Initialize: (opts: { token: string }) => void;
-      Checkout: {
-        open: (opts: {
-          items: Array<{ priceId: string; quantity: number }>;
-          customData?: Record<string, string>;
-          customer?: { email?: string };
-        }) => void;
-      };
-    };
-  }
-}
-
 type UpgradeButtonProps = {
-  userId: string;
-  userEmail?: string;
   label?: string;
   className?: string;
 };
 
 export function UpgradeButton({
-  userId,
-  userEmail,
   label = "Upgrade to Pro",
   className,
 }: UpgradeButtonProps) {
-  const [ready, setReady] = useState(false);
-  const priceId = process.env.NEXT_PUBLIC_PADDLE_PRICE_ID;
-  const clientToken = process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN;
-  const paddleEnv = process.env.NEXT_PUBLIC_PADDLE_ENV ?? "sandbox";
+  const [loading, setLoading] = useState(false);
+  const productId = process.env.NEXT_PUBLIC_DODO_PRODUCT_ID;
 
-  useEffect(() => {
-    if (!clientToken || !priceId) return;
-
-    const script = document.createElement("script");
-    script.src = "https://cdn.paddle.com/paddle/v2/paddle.js";
-    script.async = true;
-    script.onload = () => {
-      if (window.Paddle) {
-        window.Paddle.Environment.set(paddleEnv);
-        window.Paddle.Initialize({ token: clientToken });
-        setReady(true);
+  async function handleCheckout() {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/billing/checkout", { method: "POST" });
+      const data = (await res.json()) as { checkout_url?: string; error?: string };
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url;
+        return;
       }
-    };
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, [clientToken, paddleEnv, priceId]);
-
-  function handleCheckout() {
-    if (!window.Paddle || !priceId) return;
-    window.Paddle.Checkout.open({
-      items: [{ priceId, quantity: 1 }],
-      customData: { userId },
-      customer: userEmail ? { email: userEmail } : undefined,
-    });
+      console.error(data.error ?? "Checkout failed");
+    } finally {
+      setLoading(false);
+    }
   }
 
-  if (!clientToken || !priceId) {
+  if (!productId) {
     return (
       <Button disabled className={className}>
-        Configure Paddle to enable checkout
+        Configure Dodo Payments to enable checkout
       </Button>
     );
   }
 
   return (
-    <Button onClick={handleCheckout} disabled={!ready} className={className}>
-      {label}
+    <Button onClick={handleCheckout} disabled={loading} className={className}>
+      {loading ? "Redirecting..." : label}
     </Button>
   );
 }

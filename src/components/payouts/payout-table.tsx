@@ -18,11 +18,9 @@ import { UpgradeButton } from "@/components/billing/upgrade-button";
 type PayoutTableProps = {
   payouts: Payout[];
   lockedIds: Set<string>;
-  userId: string;
-  userEmail?: string;
 };
 
-export function PayoutTable({ payouts, lockedIds, userId, userEmail }: PayoutTableProps) {
+export function PayoutTable({ payouts, lockedIds }: PayoutTableProps) {
   if (payouts.length === 0) {
     return (
       <Card className="border-border">
@@ -113,7 +111,7 @@ export function PayoutTable({ payouts, lockedIds, userId, userEmail }: PayoutTab
                 View every payout, understand every deduction, and export your records anytime.
               </p>
               <p className="mt-3 text-2xl font-semibold tabular-nums">$9 / month</p>
-              <UpgradeButton userId={userId} userEmail={userEmail} className="mt-4" />
+              <UpgradeButton className="mt-4" />
             </div>
           </div>
         )}

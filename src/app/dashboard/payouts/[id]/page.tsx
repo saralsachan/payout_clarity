@@ -2,7 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { getUser } from "@/lib/supabase/server";
 import { getPayoutById, getPayoutsForUser } from "@/lib/data/payouts";
-import { hasProAccess, canAccessPayout } from "@/lib/paddle/entitlements";
+import { hasProAccess, canAccessPayout } from "@/lib/dodo/entitlements";
 import { PayoutDetailClient } from "@/components/payouts/payout-detail-client";
 import { UpgradeButton } from "@/components/billing/upgrade-button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -33,7 +33,7 @@ export default async function PayoutDetailPage({
             Your most recent payout is free. Upgrade to view and export your complete payout
             history.
           </p>
-          <UpgradeButton userId={user.id} userEmail={user.email} className="mt-6" />
+          <UpgradeButton className="mt-6" />
           <Link href="/dashboard" className="mt-4 text-sm text-primary hover:underline">
             Back to payouts
           </Link>

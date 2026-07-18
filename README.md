@@ -25,20 +25,20 @@ This is **not** accounting, bookkeeping, or tax software.
 - **TypeScript**, **Tailwind CSS**, **shadcn/ui**
 - **Supabase** (Auth + PostgreSQL + RLS)
 - **Shopify Admin GraphQL API** (2025-10)
-- **Paddle Billing v2**
+- **Dodo Payments**
 - **Recharts** (summary chart)
 - **Vitest** (financial calculation tests)
 
 ## Architecture
 
 ```
-Browser → Next.js (RSC + Route Handlers) → Supabase / Shopify GraphQL / Paddle
+Browser → Next.js (RSC + Route Handlers) → Supabase / Shopify GraphQL / Dodo Payments
 ```
 
 - Shopify OAuth tokens stored server-side only
 - Financial values stored as integer minor units (cents)
 - Subscription gating enforced server-side
-- Paddle webhooks verified with raw body + HMAC signature
+- Dodo Payments webhooks verified via `@dodopayments/nextjs`
 
 ## Local installation
 
@@ -65,10 +65,10 @@ See [`.env.example`](.env.example) for the full list.
 | `SHOPIFY_API_KEY` / `SHOPIFY_API_SECRET` | Shopify Partner app credentials |
 | `SHOPIFY_SCOPES` | `read_shopify_payments_payouts` (minimum) |
 | `SHOPIFY_APP_URL` | Your app URL for OAuth callbacks |
-| `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN` | Paddle.js client token |
-| `PADDLE_API_KEY` | Paddle server API key |
-| `PADDLE_WEBHOOK_SECRET` | Paddle webhook signature secret |
-| `NEXT_PUBLIC_PADDLE_PRICE_ID` | Pro plan price ID ($9/mo) |
+| `DODO_PAYMENTS_API_KEY` | Dodo Payments API key |
+| `DODO_PAYMENTS_WEBHOOK_KEY` | Dodo webhook signing key |
+| `NEXT_PUBLIC_DODO_PRODUCT_ID` | Pro subscription product ID |
+| `DODO_PAYMENTS_ENVIRONMENT` | `test_mode` or `live_mode` |
 | `MOCK_SHOPIFY_PAYOUTS` | Dev-only mock data (never in production) |
 
 ## Supabase setup
@@ -115,22 +115,24 @@ Or apply [`supabase/migrations/20260717100000_payout_clarity_schema.sql`](supaba
 - Development stores often have **no realistic payout history**
 - Use `MOCK_SHOPIFY_PAYOUTS=true` for local UI development
 
-## Paddle sandbox setup
+## Dodo Payments setup
 
-1. Create account at [Paddle](https://www.paddle.com)
-2. Create product **Payout Clarity Pro** at $9/month
-3. Copy **Client-side token** → `NEXT_PUBLIC_PADDLE_CLIENT_TOKEN`
-4. Copy **Price ID** → `NEXT_PUBLIC_PADDLE_PRICE_ID`
-5. Create API key → `PADDLE_API_KEY`
-6. Create notification destination:
-   - URL: `https://your-domain.com/api/webhooks/paddle`
-   - Copy secret → `PADDLE_WEBHOOK_SECRET`
-7. Approve your domain in Paddle Checkout settings
+1. Create account at [Dodo Payments](https://dodopayments.com)
+2. Create subscription product **Payout Clarity Pro** at $9/month
+3. Copy **Product ID** → `NEXT_PUBLIC_DODO_PRODUCT_ID`
+4. Copy **API key** → `DODO_PAYMENTS_API_KEY`
+5. Create webhook destination:
+   - URL: `https://your-domain.com/api/webhooks/dodo`
+   - Copy signing key → `DODO_PAYMENTS_WEBHOOK_KEY`
+6. Set `DODO_PAYMENTS_ENVIRONMENT=test_mode` for sandbox
 
-### Paddle checkout notes
+### Dodo checkout notes
 
-- Checkout passes `customData.userId` for webhook subscription sync
-- Webhook route uses `await request.text()` — never `request.json()`
+- Checkout passes `metadata.userId` for webhook subscription sync
+- Upgrade button calls `/api/billing/checkout` → Dodo hosted checkout
+- Customer portal: `/api/customer-portal/dodo?customer_id=...`
+
+For local webhook testing, use [ngrok](https://ngrok.com) and point Dodo webhook URL to your tunnel.
 
 ## Mock mode (development)
 
@@ -152,8 +154,8 @@ Mock data is labeled clearly and **blocked in production**.
 6. Check reconciliation badge
 7. Export CSV from payout detail
 8. View summary at `/dashboard/summary`
-9. Upgrade via Paddle at `/dashboard/billing`
-10. Test webhook with Paddle sandbox simulator
+9. Upgrade via Dodo at `/dashboard/billing`
+10. Test webhook with Dodo sandbox events
 11. Disconnect Shopify in Settings
 12. Delete account in Settings
 
@@ -164,7 +166,7 @@ Mock data is labeled clearly and **blocked in production**.
 3. Add all environment variables from `.env.example`
 4. Set `SHOPIFY_APP_URL` and `NEXT_PUBLIC_APP_URL` to production URL
 5. Update Shopify OAuth callback URLs
-6. Update Paddle webhook URL
+6. Update Dodo webhook URL
 7. Run Supabase migrations on production database
 
 ## Scripts

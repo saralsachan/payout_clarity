@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { startOfMonth } from "date-fns";
 import { getUser } from "@/lib/supabase/server";
 import { getPayoutsForUser, getShopifyConnection } from "@/lib/data/payouts";
-import { hasProAccess } from "@/lib/paddle/entitlements";
+import { hasProAccess } from "@/lib/dodo/entitlements";
 import { formatMoney, formatRelativeTime } from "@/lib/finance/money";
 import { sumPayoutField } from "@/lib/finance/aggregate";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -109,12 +109,7 @@ export default async function DashboardPage({
         </Card>
       </div>
 
-      <PayoutTable
-        payouts={payouts}
-        lockedIds={lockedIds}
-        userId={user.id}
-        userEmail={user.email}
-      />
+      <PayoutTable payouts={payouts} lockedIds={lockedIds} />
     </div>
   );
 }

@@ -1,0 +1,42 @@
+# Payout Clarity
+
+> Payout Clarity is a Shopify payout explanation tool for small merchants. It connects to Shopify Payments via read-only OAuth, syncs payout and balance transaction data, and shows how each bank deposit was calculated.
+
+## What it does
+
+- Explains the difference between Shopify sales and bank deposits
+- Breaks down each payout into gross sales, refunds, fees, and adjustments
+- Shows transaction-level details per payout
+- Reconciles computed net vs Shopify-reported payout amount
+- Exports CSV (Pro plan)
+
+## What it is NOT
+
+- Not accounting, bookkeeping, or tax software
+- Not a replacement for QuickBooks or Xero
+- Does not modify Shopify stores (read-only access)
+
+## Requirements
+
+- Shopify store using Shopify Payments
+- Scope: read_shopify_payments_payouts and read_shopify_payments_accounts
+
+## Pricing
+
+- Free: latest payout preview
+- Pro: $9/month — full history, CSV export, monthly/YTD summary
+
+## Links
+
+- Website: https://payout-clarity.vercel.app
+- Sign up: https://payout-clarity.vercel.app/signup
+- Sitemap: https://payout-clarity.vercel.app/sitemap.xml
+- Robots: https://payout-clarity.vercel.app/robots.txt
+
+## FAQ
+
+Q: Why does my Shopify sales total differ from my bank deposit?
+A: Bank deposits are net of refunds, payment fees, adjustments, and payout timing. Payout Clarity explains each component.
+
+Q: Which stores are supported?
+A: Stores using Shopify Payments. Third-party gateways only are not supported.

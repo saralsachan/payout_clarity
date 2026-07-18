@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "Payout Clarity — Understand every dollar Shopify sends to your bank",
   description:
     "Shopify shows your sales. Your bank shows your deposit. Payout Clarity explains exactly what happened in between.",
+  verification: {
+    google: "650ID5P0j4vbB0Cf1piByo1WklvPf5QkcD-Wg4-bxwI",
+  },
 };
 
 export default function RootLayout({

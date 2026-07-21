@@ -111,7 +111,7 @@ export function SummaryClient({ payouts, period }: SummaryClientProps) {
                 {row.label}
               </span>
               <span
-                className={`tabular-nums ${row.bold ? "text-lg font-semibold" : "font-medium"} ${row.negative ? "text-red-600" : ""}`}
+                className={`tabular-nums ${row.bold ? "text-lg font-semibold" : "font-medium"} ${row.negative ? "text-destructive" : ""}`}
               >
                 {formatMoney(Math.abs(row.value))}
                 {row.negative ? " (deduction)" : ""}
@@ -130,13 +130,13 @@ export function SummaryClient({ payouts, period }: SummaryClientProps) {
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis dataKey="month" fontSize={12} />
-                  <YAxis fontSize={12} tickFormatter={(v) => `$${v}`} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-border" />
+                  <XAxis dataKey="month" fontSize={12} stroke="var(--muted-foreground)" tick={{ fill: "var(--muted-foreground)" }} />
+                  <YAxis fontSize={12} tickFormatter={(v) => `$${v}`} stroke="var(--muted-foreground)" tick={{ fill: "var(--muted-foreground)" }} />
                   <Tooltip formatter={(v) => `$${Number(v ?? 0).toLocaleString()}`} />
                   <Legend />
-                  <Bar dataKey="sales" name="Gross sales" fill="#16a34a" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="deposits" name="Bank deposits" fill="#71717a" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="sales" name="Gross sales" fill="var(--chart-1)" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="deposits" name="Bank deposits" fill="var(--chart-2)" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

@@ -26,7 +26,7 @@ export default async function ConnectPage({
   const error = params.error ? (errorMessages[params.error] ?? decodeURIComponent(params.error)) : null;
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-[#FAFAFA] px-4 py-12">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-dashboard-bg px-4 py-12">
       <ConnectShopifyForm error={error} />
     </div>
   );

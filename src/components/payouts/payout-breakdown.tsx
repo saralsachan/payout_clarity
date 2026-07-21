@@ -48,7 +48,7 @@ export function PayoutBreakdown({
           <div key={row.label} className="flex items-center justify-between text-sm">
             <span className="text-muted-foreground">{row.label}</span>
             <span
-              className={`tabular-nums font-medium ${row.negative && row.value !== 0 ? "text-red-600" : ""}`}
+              className={`tabular-nums font-medium ${row.negative && row.value !== 0 ? "text-destructive" : ""}`}
             >
               {row.signed
                 ? formatMoneySigned(row.value, currency)
@@ -64,12 +64,15 @@ export function PayoutBreakdown({
           </span>
         </div>
         {reconciled ? (
-          <Badge variant="outline" className="gap-1 border-green-200 bg-green-50 text-green-700">
+          <Badge
+            variant="outline"
+            className="gap-1 border-primary/30 bg-primary/10 text-primary dark:border-primary/40 dark:bg-primary/15"
+          >
             <CheckCircle2 className="size-3.5" />
             Breakdown reconciled
           </Badge>
         ) : (
-          <div className="flex items-center gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          <div className="flex items-center gap-2 rounded-lg border border-amber-500/35 bg-amber-500/10 px-3 py-2 text-sm text-amber-800 dark:text-amber-200">
             <AlertTriangle className="size-4 shrink-0" />
             Reconciliation difference: {formatMoneySigned(reconciliationDiff, currency)}
           </div>
@@ -92,7 +95,7 @@ export function PayoutPreviewCard() {
           <span className="text-muted-foreground">Gross sales</span>
           <span className="tabular-nums font-medium">$5,247.00</span>
         </div>
-        <div className="flex justify-between text-red-600">
+        <div className="flex justify-between text-destructive">
           <span>Refunds</span>
           <span className="tabular-nums">-$180.00</span>
         </div>
@@ -111,7 +114,10 @@ export function PayoutPreviewCard() {
             $4,812.00
           </span>
         </div>
-        <Badge variant="outline" className="mt-2 gap-1 border-green-200 bg-green-50 text-green-700">
+        <Badge
+          variant="outline"
+          className="mt-2 gap-1 border-primary/30 bg-primary/10 text-primary dark:border-primary/40 dark:bg-primary/15"
+        >
           <CheckCircle2 className="size-3.5" />
           Breakdown reconciled
         </Badge>

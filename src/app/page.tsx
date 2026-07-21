@@ -8,6 +8,7 @@ import { landingFaqs } from "@/lib/seo/faqs";
 import { landingPageJsonLd } from "@/lib/seo/json-ld";
 import { getSiteUrl, siteConfig } from "@/lib/seo/site";
 import { PayoutPreviewCard } from "@/components/payouts/payout-breakdown";
+import { ModeToggle } from "@/components/theme/mode-toggle";
 
 export const metadata: Metadata = {
   title: siteConfig.title,
@@ -40,7 +41,8 @@ export default async function LandingPage() {
             <Link href="/" className="text-lg font-semibold tracking-tight">
               Payout Clarity
             </Link>
-            <nav className="flex items-center gap-4" aria-label="Main navigation">
+            <nav className="flex items-center gap-2 sm:gap-4" aria-label="Main navigation">
+              <ModeToggle />
               <Link href="/login" className="text-sm text-muted-foreground hover:text-foreground">
                 Log in
               </Link>
@@ -82,7 +84,7 @@ export default async function LandingPage() {
 
           <section
             id="how-it-works"
-            className="border-t border-border bg-[#FAFAFA] py-20"
+            className="border-t border-border bg-muted/40 py-20"
             aria-labelledby="how-it-works-heading"
           >
             <div className="mx-auto max-w-6xl px-6">
@@ -148,7 +150,7 @@ export default async function LandingPage() {
 
           <section
             id="pricing"
-            className="border-t border-border bg-[#FAFAFA] py-20"
+            className="border-t border-border bg-muted/40 py-20"
             aria-labelledby="pricing-heading"
           >
             <div className="mx-auto max-w-6xl px-6 text-center">

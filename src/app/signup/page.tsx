@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AuthForm } from "@/components/auth/auth-form";
+import { ModeToggle } from "@/components/theme/mode-toggle";
 import { getSiteUrl, siteConfig } from "@/lib/seo/site";
 
 export const metadata: Metadata = {
@@ -16,7 +17,10 @@ export const metadata: Metadata = {
 
 export default function SignupPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#FAFAFA] px-4">
+    <div className="relative flex min-h-screen items-center justify-center bg-dashboard-bg px-4">
+      <div className="absolute right-4 top-4">
+        <ModeToggle />
+      </div>
       <AuthForm mode="signup" />
     </div>
   );

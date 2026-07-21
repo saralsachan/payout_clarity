@@ -71,7 +71,7 @@ export function PayoutTable({ payouts, lockedIds }: PayoutTableProps) {
                     <TableCell className="text-right tabular-nums">
                       {formatMoney(payout.gross_sales, payout.currency)}
                     </TableCell>
-                    <TableCell className="text-right tabular-nums text-red-600">
+                    <TableCell className="text-right tabular-nums text-destructive">
                       {formatMoneySigned(-payout.refunds, payout.currency)}
                     </TableCell>
                     <TableCell className="text-right tabular-nums text-muted-foreground">

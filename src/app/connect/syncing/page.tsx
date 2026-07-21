@@ -11,7 +11,7 @@ export default async function SyncingPage() {
   if (!connection) redirect("/connect");
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#FAFAFA] px-4">
+    <div className="flex min-h-screen items-center justify-center bg-dashboard-bg px-4">
       <SyncProgress />
     </div>
   );

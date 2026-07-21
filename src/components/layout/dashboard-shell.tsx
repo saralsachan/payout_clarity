@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { DashboardNav, StoreBadge } from "./dashboard-nav";
+import { ModeToggle } from "@/components/theme/mode-toggle";
 
 type DashboardShellProps = {
   children: React.ReactNode;
@@ -34,7 +35,7 @@ export function DashboardShell({ children, shopDomain, userEmail }: DashboardShe
   const initials = userEmail?.slice(0, 2).toUpperCase() ?? "PC";
 
   return (
-    <div className="flex min-h-screen bg-[#FAFAFA]">
+    <div className="flex min-h-screen bg-dashboard-bg">
       <aside className="hidden w-[250px] shrink-0 flex-col border-r border-border bg-card lg:flex">
         <div className="flex h-14 items-center border-b border-border px-6">
           <Link href="/dashboard" className="text-base font-semibold tracking-tight">
@@ -44,6 +45,10 @@ export function DashboardShell({ children, shopDomain, userEmail }: DashboardShe
         <div className="flex flex-1 flex-col py-4">
           <DashboardNav />
           <div className="mt-auto space-y-3 px-3 pb-4">
+            <div className="flex items-center justify-between px-1">
+              <span className="text-xs font-medium text-muted-foreground">Appearance</span>
+              <ModeToggle />
+            </div>
             {shopDomain && <StoreBadge domain={shopDomain} />}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -84,6 +89,9 @@ export function DashboardShell({ children, shopDomain, userEmail }: DashboardShe
             </SheetContent>
           </Sheet>
           <span className="font-semibold">Payout Clarity</span>
+          <div className="ml-auto">
+            <ModeToggle />
+          </div>
         </header>
         <main className="mx-auto w-full max-w-[1280px] flex-1 px-6 py-8 lg:px-8">{children}</main>
       </div>
